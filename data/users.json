@@ -1,0 +1,10 @@
+[
+  {
+    "id": "admin-1",
+    "phone": "+79034571605",
+    "email": "admin@exoscan.ru",
+    "password": "$2b$12$euVA4R3i2BdlZ9poUDbTuud608XXoqTmWDCkpBi3FIQNYVVYg6jCe",
+    "role": "admin",
+    "createdAt": "2025-09-29T10:26:03.504Z"
+  }
+]

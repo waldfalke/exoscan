@@ -1,6 +1,5 @@
 import { google } from 'googleapis'
-import { getServerSession } from 'next-auth'
-import { authOptions } from './auth'
+import { JWT } from 'google-auth-library'
 
 export interface InventoryItem {
   id: string
@@ -14,56 +13,63 @@ export interface InventoryItem {
 export class SheetsService {
   private sheets: ReturnType<typeof google.sheets>
   
-  constructor(accessToken: string) {
-    const auth = new google.auth.OAuth2()
-    auth.setCredentials({ access_token: accessToken })
+  constructor() {
+    // Используем Service Account вместо OAuth
+    const serviceAccountKey = {
+      type: "service_account",
+      project_id: process.env.GOOGLE_PROJECT_ID,
+      private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      auth_uri: "https://accounts.google.com/o/oauth2/auth",
+      token_uri: "https://oauth2.googleapis.com/token",
+      auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+      client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${process.env.GOOGLE_CLIENT_EMAIL}`
+    }
+
+    const auth = new JWT({
+      email: serviceAccountKey.client_email,
+      key: serviceAccountKey.private_key,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    })
+
     this.sheets = google.sheets({ version: 'v4', auth })
   }
 
-  static async fromSession() {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.accessToken) {
-      throw new Error('No access token available')
-    }
-    return new SheetsService(session.user.accessToken)
+  static create() {
+    return new SheetsService()
   }
 
-  async getInventoryItems(spreadsheetId: string, range: string = 'A:F'): Promise<InventoryItem[]> {
+  async getInventoryItems(spreadsheetId: string): Promise<InventoryItem[]> {
     try {
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId,
-        range,
+        range: 'Inventory!A2:G', // Предполагаем, что данные начинаются со 2-й строки
       })
 
       const rows = response.data.values || []
-      if (rows.length === 0) return []
-
-      // Skip header row
-      return rows.slice(1).map((row: string[], index: number) => ({
-        id: row[0] || `item_${index}`,
+      return rows.map((row, index) => ({
+        id: row[0] || `item-${index + 1}`,
         name: row[1] || '',
         quantity: parseInt(row[2]) || 0,
         location: row[3] || '',
         lastUpdated: row[4] || new Date().toISOString(),
-        scannedBy: row[5] || ''
+        scannedBy: row[5] || 'unknown'
       }))
     } catch (error) {
-      console.error('Error reading from sheets:', error)
-      throw new Error('Failed to read inventory data')
+      console.error('Error fetching inventory items:', error)
+      throw new Error('Failed to fetch inventory items')
     }
   }
 
-  async addInventoryItem(
-    spreadsheetId: string, 
-    item: Omit<InventoryItem, 'id'>,
-    range: string = 'A:F'
-  ): Promise<void> {
+  async addInventoryItem(spreadsheetId: string, item: Omit<InventoryItem, 'id'>): Promise<void> {
     try {
       const values = [
         [
-          `item_${Date.now()}`,
+          `item-${Date.now()}`, // Генерируем ID
           item.name,
-          item.quantity,
+          item.quantity.toString(),
           item.location,
           item.lastUpdated,
           item.scannedBy
@@ -72,91 +78,91 @@ export class SheetsService {
 
       await this.sheets.spreadsheets.values.append({
         spreadsheetId,
-        range,
+        range: 'Inventory!A:G',
         valueInputOption: 'RAW',
-        requestBody: { values }
+        requestBody: {
+          values
+        }
       })
     } catch (error) {
-      console.error('Error adding to sheets:', error)
+      console.error('Error adding inventory item:', error)
       throw new Error('Failed to add inventory item')
     }
   }
 
-  async updateInventoryItem(
-    spreadsheetId: string,
-    itemId: string,
-    updates: Partial<InventoryItem>,
-    range: string = 'A:F'
-  ): Promise<void> {
+  async updateInventoryItem(spreadsheetId: string, itemId: string, updates: Partial<InventoryItem>): Promise<void> {
     try {
-      // First, find the row with the matching ID
-      const items = await this.getInventoryItems(spreadsheetId, range)
-      const itemIndex = items.findIndex(item => item.id === itemId)
+      // Сначала найдем строку с нужным ID
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: 'Inventory!A:G',
+      })
+
+      const rows = response.data.values || []
+      const rowIndex = rows.findIndex(row => row[0] === itemId)
       
-      if (itemIndex === -1) {
+      if (rowIndex === -1) {
         throw new Error('Item not found')
       }
 
-      const rowNumber = itemIndex + 2 // +1 for header, +1 for 0-based index
-      const updatedItem = { ...items[itemIndex], ...updates }
-
-      const values = [
-        [
-          updatedItem.id,
-          updatedItem.name,
-          updatedItem.quantity,
-          updatedItem.location,
-          updatedItem.lastUpdated,
-          updatedItem.scannedBy
-        ]
+      // Обновляем найденную строку
+      const currentRow = rows[rowIndex]
+      const updatedRow = [
+        itemId, // ID не меняется
+        updates.name ?? currentRow[1],
+        updates.quantity?.toString() ?? currentRow[2],
+        updates.location ?? currentRow[3],
+        updates.lastUpdated ?? currentRow[4],
+        updates.scannedBy ?? currentRow[5]
       ]
 
       await this.sheets.spreadsheets.values.update({
         spreadsheetId,
-        range: `A${rowNumber}:F${rowNumber}`,
+        range: `Inventory!A${rowIndex + 1}:G${rowIndex + 1}`,
         valueInputOption: 'RAW',
-        requestBody: { values }
+        requestBody: {
+          values: [updatedRow]
+        }
       })
     } catch (error) {
-      console.error('Error updating sheets:', error)
+      console.error('Error updating inventory item:', error)
       throw new Error('Failed to update inventory item')
     }
   }
 
-  async deleteInventoryItem(
-    spreadsheetId: string,
-    itemId: string,
-    range: string = 'A:F'
-  ): Promise<void> {
+  async deleteInventoryItem(spreadsheetId: string, itemId: string): Promise<void> {
     try {
-      const items = await this.getInventoryItems(spreadsheetId, range)
-      const itemIndex = items.findIndex(item => item.id === itemId)
+      // Найдем строку с нужным ID
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: 'Inventory!A:G',
+      })
+
+      const rows = response.data.values || []
+      const rowIndex = rows.findIndex(row => row[0] === itemId)
       
-      if (itemIndex === -1) {
+      if (rowIndex === -1) {
         throw new Error('Item not found')
       }
 
-      const rowNumber = itemIndex + 2 // +1 for header, +1 for 0-based index
-
+      // Удаляем строку
       await this.sheets.spreadsheets.batchUpdate({
         spreadsheetId,
         requestBody: {
-          requests: [
-            {
-              deleteDimension: {
-                range: {
-                  sheetId: 0, // Assuming first sheet
-                  dimension: 'ROWS',
-                  startIndex: rowNumber - 1,
-                  endIndex: rowNumber
-                }
+          requests: [{
+            deleteDimension: {
+              range: {
+                sheetId: 0, // Предполагаем, что это первый лист
+                dimension: 'ROWS',
+                startIndex: rowIndex,
+                endIndex: rowIndex + 1
               }
             }
-          ]
+          }]
         }
       })
     } catch (error) {
-      console.error('Error deleting from sheets:', error)
+      console.error('Error deleting inventory item:', error)
       throw new Error('Failed to delete inventory item')
     }
   }

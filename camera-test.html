@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .log {
+            background: #f5f5f5;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Camera Constraint Test</h1>
+    <video id="video" autoplay playsinline muted></video>
+    <br>
+    <button onclick="testOptimalConstraints()">Test Optimal Constraints</button>
+    <button onclick="testBasicConstraints()">Test Basic Constraints</button>
+    <button onclick="testMinimalConstraints()">Test Minimal Constraints</button>
+    <button onclick="stopCamera()">Stop Camera</button>
+    
+    <div id="log" class="log"></div>
+
+    <script>
+        const video = document.getElementById('video');
+        const logDiv = document.getElementById('log');
+        let currentStream = null;
+
+        function log(message) {
+            console.log(message);
+            logDiv.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function getOptimalConstraints() {
+            return {
+                video: {
+                    width: { ideal: 1920, min: 640 },
+                    height: { ideal: 1080, min: 480 },
+                    frameRate: { ideal: 30 }
+                }
+            };
+        }
+
+        function getBasicConstraints() {
+            return {
+                video: {
+                    width: { ideal: 1280, min: 640 },
+                    height: { ideal: 720, min: 480 }
+                }
+            };
+        }
+
+        function getMinimalConstraints() {
+            return {
+                video: true
+            };
+        }
+
+        async function testConstraints(constraints, name) {
+            log(`Testing ${name} constraints...`);
+            log(`Constraints: ${JSON.stringify(constraints, null, 2)}`);
+            
+            try {
+                stopCamera();
+                
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+                currentStream = stream;
+                
+                log(`✅ ${name} constraints successful!`);
+                log(`Stream info: ${stream.getTracks().map(track => 
+                    `${track.kind}: ${track.label} (${track.getSettings().width}x${track.getSettings().height})`
+                ).join(', ')}`);
+                
+                // Log actual settings
+                const videoTrack = stream.getVideoTracks()[0];
+                if (videoTrack) {
+                    const settings = videoTrack.getSettings();
+                    log(`Actual settings: ${JSON.stringify(settings, null, 2)}`);
+                }
+                
+            } catch (error) {
+                log(`❌ ${name} constraints failed: ${error.name} - ${error.message}`);
+                if (error.constraint) {
+                    log(`Failed constraint: ${error.constraint}`);
+                }
+            }
+        }
+
+        function testOptimalConstraints() {
+            testConstraints(getOptimalConstraints(), 'Optimal');
+        }
+
+        function testBasicConstraints() {
+            testConstraints(getBasicConstraints(), 'Basic');
+        }
+
+        function testMinimalConstraints() {
+            testConstraints(getMinimalConstraints(), 'Minimal');
+        }
+
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+                video.srcObject = null;
+                log('Camera stopped');
+            }
+        }
+
+        // Test fallback logic
+        async function testFallbackLogic() {
+            log('Testing fallback logic...');
+            
+            const constraintsToTry = [
+                { name: 'optimal', constraints: getOptimalConstraints() },
+                { name: 'basic', constraints: getBasicConstraints() },
+                { name: 'minimal', constraints: getMinimalConstraints() }
+            ];
+
+            for (const { name, constraints } of constraintsToTry) {
+                try {
+                    log(`Trying ${name} constraints...`);
+                    stopCamera();
+                    
+                    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    video.srcObject = stream;
+                    currentStream = stream;
+                    
+                    log(`✅ Success with ${name} constraints!`);
+                    break;
+                    
+                } catch (error) {
+                    log(`❌ ${name} failed: ${error.name} - ${error.message}`);
+                    
+                    if (error.name === 'OverconstrainedError' && name !== 'minimal') {
+                        log(`Trying next level...`);
+                        continue;
+                    }
+                    
+                    if (name === 'minimal') {
+                        log(`All constraint levels failed!`);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            log('Page loaded. Testing fallback logic...');
+            setTimeout(testFallbackLogic, 1000);
+        });
+    </script>
+</body>
+</html>

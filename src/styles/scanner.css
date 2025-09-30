@@ -1,0 +1,348 @@
+/* Scanner HUD Animations */
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(4000%);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+}
+
+@keyframes focus-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes success-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  40%, 43% {
+    transform: translate3d(0, -10px, 0) scale(1.1);
+  }
+  70% {
+    transform: translate3d(0, -5px, 0) scale(1.05);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0) scale(1.02);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Utility classes */
+.animate-scan-line {
+  animation: scan-line 2s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-focus-ring {
+  animation: focus-ring 1.5s ease-out infinite;
+}
+
+.animate-success-bounce {
+  animation: success-bounce 1s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Glassmorphism effects */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-panel {
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-button {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.glass-button:active {
+  transform: translateY(0);
+}
+
+/* Safe area adjustments for mobile */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  
+  .safe-area-left {
+    padding-left: max(1rem, env(safe-area-inset-left));
+  }
+  
+  .safe-area-right {
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .mobile-hud-spacing {
+    padding: 1rem;
+  }
+  
+  .mobile-button-size {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .mobile-capture-button {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+}
+
+/* HUD Button Styles */
+.hud-button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.hud-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.hud-button:active {
+  transform: scale(0.95);
+}
+
+.hud-button-active {
+  background: rgba(59, 130, 246, 0.8);
+  border-color: rgba(96, 165, 250, 0.5);
+  color: white;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+.hud-button-secondary {
+  background: rgba(31, 41, 55, 0.6);
+  border-color: rgba(75, 85, 99, 0.5);
+}
+
+.hud-button-secondary:hover {
+  background: rgba(55, 65, 81, 0.7);
+}
+
+/* Main Capture Button */
+.hud-capture-button {
+  position: relative;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.hud-capture-button:hover {
+  transform: scale(1.05);
+}
+
+.hud-capture-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.hud-capture-button:active {
+  transform: scale(0.9);
+}
+
+.hud-capture-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hud-capture-button:disabled:hover {
+  transform: scale(1);
+}
+
+/* Safe area padding for mobile devices */
+.p-safe-bottom {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
+/* Enhanced glassmorphism effects */
+.glassmorphism-strong {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glassmorphism-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Advanced button hover effects */
+.hud-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+}
+
+.hud-button:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Capture button glow effect */
+.hud-capture-button::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hud-capture-button:hover::before {
+  opacity: 1;
+}
+
+/* Status indicator animations */
+.status-pulse {
+  animation: status-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Enhanced focus ring for accessibility */
+.focus-ring-enhanced {
+  outline: none;
+}
+
+.focus-ring-enhanced:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.5), 0 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .scanner-frame {
+    border-width: 3px;
+  }
+  
+  .scanner-button {
+    border-width: 2px;
+  }
+  
+  .hud-button {
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    border-color: white;
+  }
+  
+  .hud-button-active {
+    background: rgb(37, 99, 235);
+    color: white;
+    border-color: rgb(96, 165, 250);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scan-line,
+  .animate-pulse-glow,
+  .animate-focus-ring,
+  .animate-success-bounce,
+  .animate-slide-up,
+  .animate-fade-in,
+  .status-pulse {
+    animation: none;
+  }
+  
+  .transition-all {
+    transition: none;
+  }
+  
+  .hud-button:hover,
+  .hud-capture-button:hover {
+    transform: none;
+  }
+}

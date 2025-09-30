@@ -11,6 +11,22 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "ExoScan - Inventory Management",
   description: "QR/Barcode scanning inventory management with Google Sheets integration",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  themeColor: '#000000',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'ExoScan',
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({

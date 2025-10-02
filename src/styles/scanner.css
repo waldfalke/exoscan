@@ -325,6 +325,64 @@
   }
 }
 
+/* Manual Mode Enhanced Styles */
+.manual-mode-enhanced {
+  position: relative;
+}
+
+.manual-mode-enhanced:hover {
+  transform: scale(1.1);
+}
+
+.manual-mode-enhanced:active {
+  transform: scale(0.95);
+}
+
+.manual-mode-enhanced::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(96, 165, 250, 0.3));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.manual-mode-enhanced:hover::after {
+  opacity: 1;
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Enhanced pulse glow for manual mode */
+.animate-pulse-glow {
+  animation: enhanced-pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes enhanced-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.5);
+  }
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .animate-scan-line,
@@ -342,7 +400,12 @@
   }
   
   .hud-button:hover,
-  .hud-capture-button:hover {
+  .hud-capture-button:hover,
+  .manual-mode-enhanced:hover {
     transform: none;
+  }
+  
+  .manual-mode-enhanced::after {
+    display: none;
   }
 }

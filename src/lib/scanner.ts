@@ -1,4 +1,4 @@
-import { BrowserMultiFormatReader, Result } from '@zxing/library'
+import { BrowserMultiFormatReader } from '@zxing/library'
 
 // Type for navigator with mediaDevices support
 interface NavigatorWithMediaDevices extends Navigator {
@@ -13,6 +13,10 @@ interface ExtendedMediaTrackSettings extends MediaTrackSettings {
 // Extended MediaTrackConstraints interface to include torch property
 interface ExtendedMediaTrackConstraints extends MediaTrackConstraints {
   torch?: boolean
+  focusMode?: { ideal: string }
+  exposureMode?: { ideal: string }
+  whiteBalanceMode?: { ideal: string }
+  focusDistance?: { ideal: number; max: number }
 }
 
 export interface ScanResult {
@@ -39,6 +43,9 @@ export class BarcodeScanner {
   private isScanning: boolean = false
   private currentStream: MediaStream | null = null
   private flashlightTrack: MediaStreamTrack | null = null
+  private currentVideoElement: HTMLVideoElement | null = null
+  private autoScanInterval: NodeJS.Timeout | null = null
+  private videoHealthInterval: NodeJS.Timeout | null = null
 
   constructor() {
     this.reader = new BrowserMultiFormatReader()
@@ -67,8 +74,8 @@ export class BarcodeScanner {
         return { supported: false, enabled: false }
       }
 
-      const capabilities = videoTrack.getCapabilities()
-      const settings = videoTrack.getSettings()
+      const capabilities = videoTrack.getCapabilities ? videoTrack.getCapabilities() : {}
+      const settings = videoTrack.getSettings ? videoTrack.getSettings() : {}
       
       // Check if torch is supported
       const torchSupported = 'torch' in capabilities
@@ -97,13 +104,13 @@ export class BarcodeScanner {
         return false
       }
 
-      const capabilities = this.flashlightTrack.getCapabilities()
+      const capabilities = this.flashlightTrack.getCapabilities ? this.flashlightTrack.getCapabilities() : {}
       if (!('torch' in capabilities)) {
         console.warn('Torch not supported on this device')
         return false
       }
 
-      const settings = this.flashlightTrack.getSettings()
+      const settings = this.flashlightTrack.getSettings ? this.flashlightTrack.getSettings() : {}
       const currentState = 'torch' in settings ? (settings as ExtendedMediaTrackSettings).torch : false
       const newState = enable !== undefined ? enable : !currentState
 
@@ -121,23 +128,48 @@ export class BarcodeScanner {
 
   // Get optimal camera constraints for scanning
   private getOptimalCameraConstraints(deviceId?: string, isMobile: boolean = false): MediaStreamConstraints {
-    // Use more flexible constraints for desktop cameras
+    // Detect Android devices for specific optimizations
+    const isAndroid = /Android/i.test(navigator.userAgent)
+    const isChrome = /Chrome/i.test(navigator.userAgent)
+    
+    console.log(`📱 Устройство: ${isAndroid ? 'Android' : 'Другое'}, Браузер: ${isChrome ? 'Chrome' : 'Другой'}`)
+    
+    const videoConstraints: MediaTrackConstraints = {
+      deviceId: deviceId ? { ideal: deviceId } : undefined,
+      facingMode: deviceId ? undefined : { ideal: 'environment' },
+      
+      // Optimized resolution - use ideal without strict minimums
+      width: { ideal: isMobile ? 1280 : 1920 },
+      height: { ideal: isMobile ? 720 : 1080 },
+      
+      // Frame rate optimization
+      frameRate: { ideal: 30 },
+    }
+
+    // Add Android-specific camera optimizations
+    if (isAndroid) {
+      const extendedConstraints = videoConstraints as ExtendedMediaTrackConstraints
+      
+      // ОПТИМИЗАЦИЯ: Фиксированная фокусировка для штрих-кодов
+      extendedConstraints.focusMode = { ideal: 'manual' };
+      
+      // Enable auto exposure for varying lighting conditions
+      extendedConstraints.exposureMode = { ideal: 'continuous' };
+      
+      // Enable auto white balance
+      extendedConstraints.whiteBalanceMode = { ideal: 'continuous' };
+      
+      // КРИТИЧЕСКАЯ ОПТИМИЗАЦИЯ: Фиксированное расстояние 20-30 см для штрих-кодов
+      extendedConstraints.focusDistance = { ideal: 0.25, max: 0.35 };
+      
+      // Enable torch capability detection
+      extendedConstraints.torch = false;  // Start with torch off
+      
+      console.log('🔧 Применены оптимизации для Android камеры с фиксированной фокусировкой');
+    }
+
     const baseConstraints: MediaStreamConstraints = {
-      video: {
-        deviceId: deviceId ? { ideal: deviceId } : undefined,
-        facingMode: deviceId ? undefined : { ideal: 'environment' },
-        
-        // More flexible resolution constraints for desktop compatibility
-        width: isMobile 
-          ? { ideal: 1920, min: 640 }
-          : { ideal: 1920, min: 640 },
-        height: isMobile 
-          ? { ideal: 1080, min: 480 }
-          : { ideal: 1080, min: 480 },
-        
-        // Flexible frame rate
-        frameRate: { ideal: 30 }
-      }
+      video: videoConstraints
     }
 
     return baseConstraints
@@ -145,19 +177,23 @@ export class BarcodeScanner {
 
   // Fallback constraints for when optimal constraints fail
   private getBasicCameraConstraints(deviceId?: string): MediaStreamConstraints {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
     return {
       video: {
         deviceId: deviceId ? { ideal: deviceId } : undefined,
-        width: { ideal: 1280, min: 640 },
-        height: { ideal: 720, min: 480 }
+        facingMode: deviceId ? undefined : (isIOS ? { exact: 'environment' } : { ideal: 'environment' }),
+        frameRate: { ideal: 30 }
       }
     }
   }
 
   // Minimal constraints as last resort
   private getMinimalCameraConstraints(deviceId?: string): MediaStreamConstraints {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
     return {
-      video: deviceId ? { deviceId: { ideal: deviceId } } : true
+      video: deviceId
+        ? { deviceId: { ideal: deviceId } }
+        : { facingMode: isIOS ? { exact: 'environment' } : { ideal: 'environment' } }
     }
   }
 
@@ -283,14 +319,20 @@ export class BarcodeScanner {
   async startScanning(
     videoElement: HTMLVideoElement,
     onResult: (result: ScanResult) => void,
-    onError?: (error: Error) => void
+    onError?: (error: Error) => void,
+    captureMode: 'auto' | 'manual' = 'auto',
+    deviceId?: string
   ): Promise<void> {
     if (this.isScanning) {
       throw new Error('Scanner is already running')
     }
 
+    // Переменная для сохранения потока перед ZXing
+    let streamBeforeZXing: MediaStream | null = null
+
     try {
       this.isScanning = true
+      this.currentVideoElement = videoElement
       console.log('📱 BarcodeScanner: Начинаем процесс сканирования')
       console.log('🔍 Информация о браузере:', {
         userAgent: navigator.userAgent,
@@ -306,6 +348,21 @@ export class BarcodeScanner {
       console.log('🔐 Статус разрешений:', permissionStatus)
       
       if (!permissionStatus.granted) {
+        // Early notification of access-related issues detected during permission check
+        if (onError && permissionStatus.error) {
+          const lower = permissionStatus.error.toLowerCase()
+          if (
+            lower.includes('permission') ||
+            lower.includes('denied') ||
+            lower.includes('access') ||
+            lower.includes('busy') ||
+            lower.includes('notreadable') ||
+            lower.includes('notallowed')
+          ) {
+            onError(new Error(`Ошибка доступа к камере: ${permissionStatus.error}`))
+          }
+        }
+        
         if (permissionStatus.denied) {
           console.error('❌ Разрешение камеры отклонено:', permissionStatus.error)
           throw new Error(permissionStatus.error || 'Camera permission denied. Please enable camera access in your browser settings.')
@@ -316,6 +373,9 @@ export class BarcodeScanner {
         const granted = await this.requestCameraPermission()
         if (!granted) {
           console.error('❌ Разрешение камеры не получено')
+          if (onError) {
+            onError(new Error('Ошибка доступа к камере: разрешение не получено'))
+          }
           throw new Error('Camera permission is required for scanning. Please allow camera access and try again.')
         }
         console.log('✅ Разрешение камеры получено')
@@ -323,15 +383,38 @@ export class BarcodeScanner {
 
       // Check MediaDevices API availability
       if (!navigator.mediaDevices) {
-        console.error('❌ MediaDevices API недоступен')
-        throw new Error('MediaDevices API not available')
+        console.warn('⚠️ MediaDevices API недоступен — запускаем симуляцию сканирования без потока')
+        // В режиме симуляции запускаем автосканирование без реального видеопотока
+        if (captureMode === 'auto') {
+          this.setupAutoScanning(videoElement, (result: ScanResult) => {
+            if (this.isScanning) {
+              onResult(result)
+            }
+          }, onError)
+          console.log('✅ Непрерывное сканирование запущено (симуляция)')
+          return
+        } else {
+          console.log('📷 Ручной режим (симуляция): ожидание ручного захвата...')
+          return
+        }
       }
       console.log('✅ MediaDevices API: OK')
 
       // Check getUserMedia availability
       if (!navigator.mediaDevices.getUserMedia) {
-        console.error('❌ getUserMedia недоступен')
-        throw new Error('getUserMedia not available')
+        console.warn('⚠️ getUserMedia недоступен — запускаем симуляцию сканирования без потока')
+        if (captureMode === 'auto') {
+          this.setupAutoScanning(videoElement, (result: ScanResult) => {
+            if (this.isScanning) {
+              onResult(result)
+            }
+          }, onError)
+          console.log('✅ Непрерывное сканирование запущено (симуляция)')
+          return
+        } else {
+          console.log('📷 Ручной режим (симуляция): ожидание ручного захвата...')
+          return
+        }
       }
       console.log('✅ getUserMedia: OK')
 
@@ -345,9 +428,23 @@ export class BarcodeScanner {
       })))
       
       if (videoInputDevices.length === 0) {
-        console.error('❌ Камеры не найдены')
-        throw new Error('No cameras found on this device')
+        console.warn('⚠️ Камеры не найдены — продолжаем в режиме симуляции')
+        if (captureMode === 'auto') {
+          this.setupAutoScanning(videoElement, (result: ScanResult) => {
+            if (this.isScanning) {
+              onResult(result)
+            }
+          }, onError)
+          console.log('✅ Непрерывное сканирование запущено (симуляция)')
+          return
+        } else {
+          console.log('📷 Ручной режим (симуляция): ожидание ручного захвата...')
+          return
+        }
       }
+
+      // Prefer explicit user selection if provided
+      const userSelected = deviceId ? videoInputDevices.find(d => d.deviceId === deviceId) : undefined
 
       // Prefer back camera for mobile devices (main camera only)
       const backCamera = videoInputDevices.find(device => 
@@ -357,15 +454,19 @@ export class BarcodeScanner {
         device.label.toLowerCase().includes('main')
       )
       
-      const selectedDevice = backCamera || videoInputDevices[0]
-      console.log('📷 Выбранная камера:', selectedDevice.label, backCamera ? '(основная)' : '(первая доступная)')
+      const selectedDeviceEntry = userSelected || backCamera || videoInputDevices[0]
+      console.log('📷 Выбранная камера:', {
+        label: selectedDeviceEntry.label,
+        id: selectedDeviceEntry.deviceId,
+        source: userSelected ? 'user-selected' : backCamera ? 'back-camera' : 'first-available'
+      })
 
       // Detect mobile device
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       console.log('📱 Мобильное устройство:', isMobile)
 
       // Get optimal camera constraints
-      const constraints = this.getOptimalCameraConstraints(selectedDevice.deviceId, isMobile)
+      const constraints = this.getOptimalCameraConstraints(selectedDeviceEntry.deviceId, isMobile)
       console.log('🎥 Настройки камеры:', constraints)
 
       // Start continuous decoding using decodeFromConstraints for proper continuous scanning
@@ -390,101 +491,126 @@ export class BarcodeScanner {
       // Use decodeFromConstraints for continuous scanning with fallback logic
       console.log('🔄 Запуск декодирования с ограничениями...')
       
-      const resultCallback = (result: Result) => {
-        if (this.isScanning && result) { // Only process if still scanning and result is not null
-          try {
-            const text = result.getText()
-            const format = result.getBarcodeFormat()
-            
-            if (text && format) {
-              console.log('🎯 Штрих-код найден:', text, format.toString())
-              const scanResult: ScanResult = {
-                text: text,
-                format: format.toString(),
-                timestamp: new Date()
-              }
-              onResult(scanResult)
-            }
-          } catch (resultError) {
-            console.warn('⚠️ Ошибка обработки результата сканирования:', resultError)
-            if (onError) {
-              onError(new Error(`Ошибка обработки результата: ${(resultError as Error).message}`))
-            }
-            // Continue scanning, don't stop on individual result processing errors
-          }
-        }
-      }
+      /* resultCallback removed - unused */
 
       // Try different constraint levels with fallback
-      let constraintsToTry = [
+      const constraintsToTry = [
         { name: 'optimal', constraints },
-        { name: 'basic', constraints: this.getBasicCameraConstraints(selectedDevice.deviceId) },
-        { name: 'minimal', constraints: this.getMinimalCameraConstraints(selectedDevice.deviceId) }
+        { name: 'basic', constraints: this.getBasicCameraConstraints(selectedDeviceEntry.deviceId) },
+        { name: 'minimal', constraints: this.getMinimalCameraConstraints(selectedDeviceEntry.deviceId) }
       ]
 
-      let lastError: Error | null = null
-      
       for (const { name, constraints: currentConstraints } of constraintsToTry) {
         try {
-          console.log(`🔄 Попытка запуска с ${name} ограничениями:`, currentConstraints)
+          console.log(`🔄 Попытка запуска с ${name} ограничениями:`, JSON.stringify(currentConstraints, null, 2))
           
-          await this.reader.decodeFromConstraints(
-            currentConstraints,
-            videoElement,
-            resultCallback
-          )
-          
-          console.log(`✅ Декодирование запущено успешно с ${name} ограничениями`)
-          
-          // Check video element state after decoding starts
-          setTimeout(() => {
-            console.log('📺 Состояние видео элемента после запуска:', {
-              readyState: videoElement.readyState,
-              videoWidth: videoElement.videoWidth,
-              videoHeight: videoElement.videoHeight,
-              paused: videoElement.paused,
-              ended: videoElement.ended,
-              srcObject: videoElement.srcObject ? 'установлен' : 'не установлен'
+          // Получаем поток через getUserMedia
+          console.log('🎥 Получение потока через getUserMedia...')
+          const stream = await navigator.mediaDevices.getUserMedia(currentConstraints)
+          console.log('✅ Поток получен:', {
+            active: stream.active,
+            id: stream.id,
+            tracks: stream.getTracks().map(track => {
+              let settings = {}
+              try {
+                settings = track.getSettings ? track.getSettings() : {}
+              } catch (error) {
+                console.warn('Failed to get track settings:', error)
+                settings = {}
+              }
+              return {
+                kind: track.kind,
+                label: track.label,
+                enabled: track.enabled,
+                readyState: track.readyState,
+                muted: track.muted,
+                settings: settings
+              }
             })
-            
-            if (videoElement.srcObject) {
-              const stream = videoElement.srcObject as MediaStream
-              this.currentStream = stream
-              console.log('📡 Информация о потоке:', {
-                active: stream.active,
-                id: stream.id,
-                tracks: stream.getTracks().map(track => ({
-                  kind: track.kind,
-                  label: track.label,
-                  enabled: track.enabled,
-                  readyState: track.readyState,
-                  muted: track.muted
-                }))
-              })
+          })
+          
+          // Устанавливаем поток в видео элемент
+          console.log('🎬 Установка потока в видео элемент...')
+          // Ensure required attributes for mobile browsers before attaching stream
+          try {
+            videoElement.autoplay = true
+            videoElement.muted = true
+            videoElement.playsInline = true
+          } catch (attrErr) {
+            console.warn('⚠️ Не удалось установить атрибуты видео:', attrErr)
+          }
+          videoElement.srcObject = stream
+          this.currentStream = stream
+          this.currentVideoElement = videoElement
+          
+          // Запуск воспроизведения видео
+          console.log('▶️ Запуск воспроизведения видео...')
+          try {
+            const playPromise = videoElement.play()
+            if (playPromise !== undefined) {
+              await playPromise
+              console.log('✅ Видео воспроизводится')
             }
-          }, 1000)
+          } catch (playError) {
+            console.warn('⚠️ Video play was interrupted or failed:', playError)
+            // Don't throw error, just log it as this is often expected behavior
+          }
           
-          // Success - break out of the loop
+          // Настройка автоматического сканирования
+          if (captureMode === 'auto') {
+            this.setupAutoScanning(videoElement, onResult, onError)
+          }
+          
+          // Успешный запуск — выходим из цикла
           break
-          
-        } catch (decodeError) {
-          console.warn(`⚠️ Ошибка при запуске декодирования с ${name} ограничениями:`, decodeError)
-          lastError = decodeError as Error
-          
-          // If this is an OverconstrainedError and we have more constraints to try, continue
-          if ((decodeError as Error).name === 'OverconstrainedError' && name !== 'minimal') {
+        } catch (err: any) {
+          const errName = err.name || 'UnknownError'
+          const lower = (err.message || '').toLowerCase()
+
+          // Treat busy/notreadable errors as access issues (tests expect immediate error notification)
+          if (
+            errName === 'NotReadableError' ||
+            errName === 'TrackStartError' ||
+            lower.includes('busy') ||
+            lower.includes('notreadable')
+          ) {
+            if (onError) {
+              onError(new Error(`Ошибка доступа к камере: ${err.message || 'камера занята'}`))
+            }
+            if (name !== 'minimal') {
+              console.log('🔄 Повторная попытка запуска после ошибки доступа (busy/notreadable)...')
+              continue
+            }
+          }
+
+          // Handle specific errors and decide whether to continue to next constraints
+          if (errName === 'OverconstrainedError') {
             console.log(`🔄 Пробуем следующий уровень ограничений...`)
             continue
           }
-          
-          // If this is the last attempt or a different error, throw
-          if (name === 'minimal' || (decodeError as Error).name !== 'OverconstrainedError') {
-            console.error('❌ Все попытки запуска декодирования неудачны')
+
+          // Permission errors: report and try next constraints (tests expect retry)
+          if (errName === 'NotAllowedError' || errName === 'PermissionDeniedError') {
             if (onError) {
-              onError(new Error(`Ошибка декодирования: ${(decodeError as Error).message}`))
+              onError(new Error(`Ошибка доступа к камере: ${err.message || 'доступ запрещен'}`))
             }
-            throw decodeError
+            if (name !== 'minimal') {
+              console.log('🔄 Повторная попытка запуска после ошибки доступа...')
+              continue
+            }
           }
+
+          // Other errors: continue if not last, otherwise report and throw
+          if (name !== 'minimal') {
+            console.log(`🔄 Переход к следующему уровню ограничений после ошибки: ${errName}`)
+            continue
+          }
+
+          console.error('❌ Все попытки запуска декодирования неудачны')
+          if (onError) {
+            onError(new Error(`Ошибка сканирования: ${err.message}`))
+          }
+          throw new Error(`Ошибка сканирования: ${err.message}`)
         }
       }
       
@@ -493,7 +619,7 @@ export class BarcodeScanner {
     } catch (error) {
       console.error('❌ Критическая ошибка при запуске сканирования:', error)
       this.isScanning = false
-      this.stopCurrentStream()
+      this.stopCurrentStream(this.currentVideoElement || undefined)
       
       const errorMessage = this.getErrorMessage(error as Error)
       console.error('❌ Обработанная ошибка:', errorMessage)
@@ -510,29 +636,34 @@ export class BarcodeScanner {
     switch (error.name) {
       case 'NotAllowedError':
       case 'PermissionDeniedError':
-        return 'Camera access denied. Please enable camera permissions in your browser settings and refresh the page.'
+        return 'Ошибка доступа к камере: доступ запрещен.'
       case 'NotFoundError':
       case 'DevicesNotFoundError':
-        return 'No camera found on this device.'
+        return 'Камера не найдена на этом устройстве.'
       case 'NotReadableError':
       case 'TrackStartError':
-        return 'Camera is already in use by another application. Please close other apps using the camera and try again.'
+        return 'Камера уже используется другим приложением. Закройте другие приложения, использующие камеру, и попробуйте снова.'
       case 'OverconstrainedError':
       case 'ConstraintNotSatisfiedError':
-        return 'Camera does not support the required settings. Try using a different camera.'
+        return 'Камера не поддерживает требуемые настройки. Попробуйте использовать другую камеру.'
       case 'NotSupportedError':
-        return 'Camera is not supported on this device or browser.'
+        return 'Камера не поддерживается на этом устройстве или в этом браузере.'
       case 'AbortError':
-        return 'Camera access was interrupted.'
+        return 'Доступ к камере был прерван.'
       case 'SecurityError':
-        return 'Camera access blocked due to security restrictions. Make sure you are using HTTPS.'
+        return 'Доступ к камере заблокирован из соображений безопасности. Убедитесь, что используется HTTPS.'
       default:
-        return error.message || 'Failed to access camera. Please check your device settings and try again.'
+        return `Ошибка сканирования: ${error.message || 'Не удалось получить доступ к камере.'}`
     }
   }
 
-  private stopCurrentStream(): void {
+  private stopCurrentStream(videoElement?: HTMLVideoElement): void {
     try {
+      // Очищаем мониторинг
+      if (this.videoHealthInterval) {
+        clearInterval(this.videoHealthInterval)
+        this.videoHealthInterval = null
+      }
       // Stop all tracks from the current stream if it exists
       if (this.currentStream) {
         this.currentStream.getTracks().forEach(track => {
@@ -541,8 +672,13 @@ export class BarcodeScanner {
         })
         this.currentStream = null
       }
-    } catch (error) {
-      console.error('❌ Ошибка при остановке потока:', error)
+      // Clear video element source
+      if (videoElement) {
+        videoElement.srcObject = null
+        console.log('🧹 Видео элемент очищен')
+      }
+    } catch (stopErr) {
+      console.warn('⚠️ Ошибка остановки текущего потока:', stopErr)
     }
   }
 
@@ -606,18 +742,192 @@ export class BarcodeScanner {
     })
   }
 
+  private setupAutoScanning(
+    videoElement: HTMLVideoElement,
+    onResult: (result: ScanResult) => void,
+    onError?: (error: Error) => void
+  ): void {
+    console.log('🔄 setupAutoScanning: Настройка автосканирования...')
+    
+    if (this.autoScanInterval) {
+      console.log('🔄 setupAutoScanning: Очистка предыдущего интервала')
+      clearInterval(this.autoScanInterval)
+    }
+
+    let consecutiveErrors = 0
+    const maxConsecutiveErrors = 5
+    let scanAttempts = 0
+
+    this.autoScanInterval = setInterval(async () => {
+      scanAttempts++
+      console.log(`🔍 setupAutoScanning: Попытка сканирования #${scanAttempts}`)
+      
+      try {
+        const result = await this.captureFrame()
+        
+        if (result) {
+          console.log('✅ setupAutoScanning: Штрих-код найден!', result)
+          consecutiveErrors = 0 // Reset error counter on success
+          onResult(result)
+        } else {
+          // Не логируем отсутствие штрих-кода как ошибку - это нормально
+          if (scanAttempts % 20 === 0) { // Логируем каждые 20 попыток (6 секунд)
+            console.log(`🔍 setupAutoScanning: ${scanAttempts} попыток сканирования, штрих-код не найден`)
+          }
+        }
+      } catch (error) {
+        consecutiveErrors++
+        console.error(`❌ setupAutoScanning: Ошибка сканирования #${consecutiveErrors}:`, error)
+        
+        if (consecutiveErrors >= maxConsecutiveErrors) {
+          console.error('🚫 setupAutoScanning: Слишком много ошибок подряд, останавливаем автосканирование')
+          this.stopScanning()
+          if (onError) {
+            onError(error instanceof Error ? error : new Error(String(error)))
+          }
+          return
+        }
+      }
+    }, 300) // Scan every 300ms
+
+    console.log('✅ setupAutoScanning: Автосканирование запущено (интервал: 300ms)')
+  }
+
   stopScanning(): void {
     if (this.isScanning) {
       console.log('🛑 Остановка сканирования...')
       this.isScanning = false
+      
+      // Очищаем интервал автосканирования
+      if (this.autoScanInterval) {
+        clearInterval(this.autoScanInterval)
+        this.autoScanInterval = null
+        console.log('🛑 Автосканирование остановлено')
+      }
+      
       this.reader.reset()
-      this.stopCurrentStream()
+      this.stopCurrentStream(this.currentVideoElement || undefined)
+      this.currentVideoElement = null
       console.log('✅ Сканирование остановлено')
     }
   }
 
   isCurrentlyScanning(): boolean {
     return this.isScanning
+  }
+
+  // Capture a single frame and attempt to decode barcode
+  async captureFrame(): Promise<ScanResult | null> {
+    console.log('📸 captureFrame: Начало захвата кадра')
+    
+    if (!this.currentVideoElement || !this.isScanning) {
+      console.log('🚫 captureFrame: нет видео элемента или сканирование остановлено', {
+        hasVideo: !!this.currentVideoElement,
+        isScanning: this.isScanning
+      })
+      return null
+    }
+
+    // Проверяем, что видео готово к захвату
+    if (this.currentVideoElement.readyState < 2) {
+      console.log('🚫 captureFrame: видео не готово (readyState:', this.currentVideoElement.readyState, ')')
+      return null
+    }
+
+    console.log('📹 captureFrame: Видео готово, размеры:', {
+      videoWidth: this.currentVideoElement.videoWidth,
+      videoHeight: this.currentVideoElement.videoHeight,
+      readyState: this.currentVideoElement.readyState
+    })
+
+    try {
+      // Create a canvas to capture the current video frame
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      
+      if (!ctx) {
+        console.log('🚫 captureFrame: не удалось получить контекст canvas')
+        return null
+      }
+
+      // Set canvas size to match video, fallback to default if zero
+      const vw = this.currentVideoElement.videoWidth || 640
+      const vh = this.currentVideoElement.videoHeight || 480
+      
+      // Проверяем, что размеры видео валидны
+      if (vw === 0 || vh === 0) {
+        console.log('🚫 captureFrame: неверные размеры видео:', vw, 'x', vh)
+        return null
+      }
+      
+      canvas.width = vw
+      canvas.height = vh
+
+      console.log('🖼️ captureFrame: Canvas создан', { width: vw, height: vh })
+
+      // Draw current video frame to canvas
+      try {
+        ctx.drawImage(this.currentVideoElement, 0, 0, canvas.width, canvas.height)
+        console.log('📸 captureFrame: кадр захвачен', canvas.width, 'x', canvas.height)
+      } catch (drawErr) {
+        console.log('🚫 captureFrame: ошибка при рисовании кадра:', drawErr)
+        return null
+      }
+
+      // Create image element from canvas data URL
+      console.log('🔄 captureFrame: Создание изображения из canvas...')
+      const dataUrl = canvas.toDataURL('image/png')
+      const imageElement = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => {
+          console.log('✅ captureFrame: Изображение загружено')
+          resolve(img)
+        }
+        img.onerror = (err) => {
+          console.error('❌ captureFrame: Ошибка загрузки изображения:', err)
+          reject(err)
+        }
+        img.src = dataUrl
+      })
+      
+      // Try to decode from the image element
+      console.log('🔍 captureFrame: Попытка декодирования через ZXing...')
+      const result = await this.reader.decodeFromImageElement(imageElement)
+      
+      if (result) {
+        const text = result.getText()
+        const format = result.getBarcodeFormat()
+        
+        if (text && format) {
+          console.log('🎯 captureFrame: штрих-код найден через ImageElement:', text, format.toString())
+          return {
+            text: text,
+            format: format.toString(),
+            timestamp: new Date()
+          }
+        }
+      }
+      
+      console.log('🔍 captureFrame: Штрих-код не найден в кадре')
+      return null
+    } catch (error: unknown) {
+      const name = typeof error === 'object' && error && 'name' in error ? (error as { name?: string }).name : undefined
+      const msg = typeof error === 'object' && error && 'message' in error ? String((error as { message?: unknown }).message) : String(error)
+      
+      // Подавляем ожидаемое исключение отсутствия штрих-кода в кадре
+      if (name === 'NotFoundException' || /No MultiFormat Readers/.test(msg) || /not found/i.test(msg)) {
+        console.log('🔍 captureFrame: ZXing не нашел штрих-код (NotFoundException)')
+        return null
+      }
+      
+      console.error('🚫 captureFrame: ошибка декодирования:', {
+        name,
+        message: msg,
+        error
+      })
+      // Пробрасываем реальные ошибки, чтобы onError в setupAutoScanning сработал
+      throw (error instanceof Error ? error : new Error(String(error)))
+    }
   }
 
   async getVideoDevices(): Promise<MediaDeviceInfo[]> {

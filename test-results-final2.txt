@@ -1,0 +1,948 @@
+
+> exoscan-web@0.1.0 test
+> jest --testPathPatterns=Scanner.integration.test.tsx --verbose
+
+ тЪа Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of D:\Dev\ExoScan\package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * D:\Dev\ExoScan\exoscan-web\package-lock.json
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.478Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.635Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    ЁЯФД Camera switched
+
+      at log (src/components/Scanner.tsx:148:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.664Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.740Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '9876543210987',
+      format: 'CODE_128',
+      timestamp: 2025-10-02T18:03:55.772Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.802Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-0',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.909Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.971Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-1',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:55.990Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.001Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.017Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-2',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.078Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.094Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.095Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.111Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.126Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-3',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.172Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.188Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.204Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.204Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.219Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.234Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-4',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.265Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.280Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.296Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.312Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.313Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.328Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.343Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-5',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.358Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.374Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.389Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.405Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.421Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.422Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.435Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-6',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.451Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.452Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.466Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.482Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.497Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.512Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-7',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.527Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.528Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.543Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.544Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.559Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.560Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.576Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.591Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.607Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-8',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.622Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.622Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.637Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.638Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.652Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.653Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.667Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.667Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.682Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'barcode-9',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.702Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.713Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.713Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.728Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.729Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.744Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.744Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.760Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.761Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.775Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.776Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.790Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.810Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.811Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.818Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.819Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.831Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:56.832Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'recovery-barcode',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:57.208Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:57.315Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: '1234567890123',
+      format: 'EAN_13',
+      timestamp: 2025-10-02T18:03:57.346Z
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+FAIL src/components/__tests__/Scanner.integration.test.tsx
+  Scanner Component - Integration Tests
+    Complete Scanning Workflow
+      тИЪ should complete full camera-to-scan workflow (238 ms)
+      тИЪ should handle camera switching during scanning (136 ms)
+      ├Ч should handle multiple consecutive scans (169 ms)
+    MediaStream Lifecycle Integration
+      тИЪ should properly manage stream lifecycle during errors (15 ms)
+      тИЪ should handle stream interruption and recovery (9 ms)
+    Performance Integration
+      ├Ч should maintain performance during continuous scanning (903 ms)
+      тИЪ should not cause memory leaks during extended use (60 ms)
+    Error Recovery Integration
+      тИЪ should recover from temporary camera access issues (92 ms)
+      тИЪ should handle ZXing library errors gracefully (294 ms)
+    Real-world Scenarios
+      тИЪ should handle rapid start/stop/start cycles (45 ms)
+      тИЪ should work correctly after page visibility changes (76 ms)
+
+  тЧП Scanner Component - Integration Tests тА║ Complete Scanning Workflow тА║ should handle multiple consecutive scans
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 2
+    Received number of calls: 3
+
+      363 |       shouldContinueScanning = false;
+      364 |       
+    > 365 |       expect(mockOnScan).toHaveBeenCalledTimes(2);
+          |                          ^
+      366 |     });
+      367 |   });
+      368 |
+
+      at Object.toHaveBeenCalledTimes (src/components/__tests__/Scanner.integration.test.tsx:365:26)
+
+  тЧП Scanner Component - Integration Tests тА║ Performance Integration тА║ should maintain performance during continuous scanning
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 10
+    Received number of calls: 66
+
+      467 |       // Should complete 10 scans in reasonable time (less than 5 seconds)
+      468 |       expect(duration).toBeLessThan(5000);
+    > 469 |       expect(mockOnScan).toHaveBeenCalledTimes(10);
+          |                          ^
+      470 |     });
+      471 |
+      472 |     it('should not cause memory leaks during extended use', async () => {
+
+      at Object.toHaveBeenCalledTimes (src/components/__tests__/Scanner.integration.test.tsx:469:26)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 9 passed, 11 total
+Snapshots:   0 total
+Time:        3.479 s
+Ran all test suites matching Scanner.integration.test.tsx.

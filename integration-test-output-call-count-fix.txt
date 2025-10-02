@@ -1,0 +1,13 @@
+
+> exoscan-web@0.1.0 test
+> jest --testPathPattern=Scanner.integration.test.tsx --clearCache --verbose
+
+testPathPattern:
+
+  Option "testPathPattern" was replaced by "--testPathPatterns". "--testPathPatterns" is only available as a command-line option.
+  
+  Please update your configuration.
+
+  CLI Options Documentation:
+  https://jestjs.io/docs/cli
+

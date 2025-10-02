@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner Test - New Logic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #000;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 10px 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .stop-btn {
+            background: #dc3545;
+        }
+        .stop-btn:hover {
+            background: #c82333;
+        }
+        .log {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Scanner Test - New Logic</h1>
+        <p>Тестирование новой логики сканера с ручным управлением потоком камеры</p>
+        
+        <video id="video" autoplay playsinline muted></video>
+        
+        <div>
+            <button id="startBtn" onclick="startScanner()">🎥 Start Scanner</button>
+            <button id="stopBtn" onclick="stopScanner()" class="stop-btn" disabled>⏹️ Stop Scanner</button>
+            <button onclick="clearLog()">🗑️ Clear Log</button>
+        </div>
+        
+        <div id="status" class="status info">Готов к тестированию</div>
+        
+        <div id="log" class="log">Логи появятся здесь...\n</div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const logDiv = document.getElementById('log');
+        const statusDiv = document.getElementById('status');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        
+        let currentStream = null;
+        let isScanning = false;
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}\n`;
+            console.log(message);
+            logDiv.textContent += logMessage;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function setStatus(message, type = 'info') {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+
+        function clearLog() {
+            logDiv.textContent = 'Логи очищены...\n';
+        }
+
+        // Имитация новой логики сканера
+        async function startScanner() {
+            if (isScanning) {
+                log('⚠️ Сканер уже запущен!', 'warning');
+                return;
+            }
+
+            try {
+                log('🚀 Запуск сканера с новой логикой...');
+                setStatus('Запуск сканера...', 'info');
+                startBtn.disabled = true;
+
+                // Шаг 1: Остановка предыдущего потока
+                if (currentStream) {
+                    log('🛑 Остановка предыдущего потока...');
+                    currentStream.getTracks().forEach(track => track.stop());
+                    currentStream = null;
+                    video.srcObject = null;
+                }
+
+                // Шаг 2: Получение потока камеры
+                log('📹 Получение потока камеры...');
+                const constraints = {
+                    video: {
+                        width: { ideal: 1280, min: 640 },
+                        height: { ideal: 720, min: 480 },
+                        frameRate: { ideal: 30 }
+                    }
+                };
+                log(`📋 Constraints: ${JSON.stringify(constraints, null, 2)}`);
+
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                log('✅ Поток получен успешно!');
+
+                // Шаг 3: Принудительная установка srcObject
+                log('🔗 Принудительная установка video.srcObject...');
+                video.srcObject = stream;
+                currentStream = stream;
+
+                // Проверка установки srcObject
+                if (video.srcObject === stream) {
+                    log('✅ srcObject установлен правильно!');
+                } else {
+                    log('❌ srcObject НЕ УСТАНОВЛЕН!');
+                }
+
+                // Шаг 4: Ожидание загрузки метаданных
+                log('⏳ Ожидание загрузки метаданных видео...');
+                await new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => {
+                        reject(new Error('Timeout waiting for metadata'));
+                    }, 10000);
+
+                    video.addEventListener('loadedmetadata', () => {
+                        clearTimeout(timeout);
+                        log('✅ Метаданные видео загружены!');
+                        resolve();
+                    }, { once: true });
+                });
+
+                // Шаг 5: Ожидание начала воспроизведения
+                log('▶️ Ожидание начала воспроизведения...');
+                await new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => {
+                        reject(new Error('Timeout waiting for video to play'));
+                    }, 5000);
+
+                    video.addEventListener('playing', () => {
+                        clearTimeout(timeout);
+                        log('✅ Видео начало воспроизводиться!');
+                        resolve();
+                    }, { once: true });
+
+                    video.play().catch(reject);
+                });
+
+                // Шаг 6: Проверка состояния видео
+                log('🔍 Проверка состояния видео...');
+                log(`📊 Video dimensions: ${video.videoWidth}x${video.videoHeight}`);
+                log(`📊 Video ready state: ${video.readyState}`);
+                log(`📊 Video paused: ${video.paused}`);
+                log(`📊 Video ended: ${video.ended}`);
+
+                // Информация о треке
+                const videoTrack = stream.getVideoTracks()[0];
+                if (videoTrack) {
+                    const settings = videoTrack.getSettings();
+                    log(`📊 Track settings: ${JSON.stringify(settings, null, 2)}`);
+                }
+
+                // Финальная проверка srcObject
+                if (video.srcObject) {
+                    log('✅ УСПЕХ: srcObject установлен и видео работает!');
+                    setStatus('✅ Сканер запущен успешно!', 'success');
+                } else {
+                    log('❌ ОШИБКА: srcObject не установлен после всех операций!');
+                    setStatus('❌ Ошибка: srcObject не установлен', 'error');
+                }
+
+                isScanning = true;
+                stopBtn.disabled = false;
+
+            } catch (error) {
+                log(`❌ Ошибка запуска сканера: ${error.name} - ${error.message}`);
+                setStatus(`❌ Ошибка: ${error.message}`, 'error');
+                startBtn.disabled = false;
+            }
+        }
+
+        function stopScanner() {
+            if (!isScanning) {
+                log('⚠️ Сканер не запущен!');
+                return;
+            }
+
+            try {
+                log('🛑 Остановка сканера...');
+                
+                if (currentStream) {
+                    currentStream.getTracks().forEach(track => {
+                        track.stop();
+                        log(`🛑 Остановлен трек: ${track.kind} - ${track.label}`);
+                    });
+                    currentStream = null;
+                }
+
+                video.srcObject = null;
+                log('✅ srcObject очищен');
+
+                isScanning = false;
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                setStatus('⏹️ Сканер остановлен', 'info');
+                log('✅ Сканер остановлен успешно!');
+
+            } catch (error) {
+                log(`❌ Ошибка остановки сканера: ${error.message}`);
+                setStatus(`❌ Ошибка остановки: ${error.message}`, 'error');
+            }
+        }
+
+        // Автоматическая очистка при закрытии страницы
+        window.addEventListener('beforeunload', () => {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+        });
+
+        // Инициализация
+        log('🔧 Тестовая страница загружена');
+        log('📱 User Agent: ' + navigator.userAgent);
+        log('🔒 Secure Context: ' + window.isSecureContext);
+        log('📹 Camera Support: ' + !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia));
+    </script>
+</body>
+</html>

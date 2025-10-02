@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "deploy": "vercel --prod --alias exoscan-web.vercel.app",
+    "deploy-manual": "vercel --prod"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

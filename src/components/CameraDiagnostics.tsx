@@ -9,7 +9,7 @@ interface DiagnosticLog {
 }
 
 interface CameraConstraints {
-  video: MediaTrackConstraints;
+  video: MediaTrackConstraints | boolean;
 }
 
 export default function CameraDiagnostics() {
@@ -27,6 +27,23 @@ export default function CameraDiagnostics() {
     setLogs([]);
   }, []);
 
+  const copyLogsToClipboard = useCallback(async () => {
+    if (logs.length === 0) {
+      addLog('No logs to copy', 'info');
+      return;
+    }
+
+    const logText = logs.map(log => `${log.timestamp}: ${log.message}`).join('\n');
+    
+    try {
+      await navigator.clipboard.writeText(logText);
+      addLog('Logs copied to clipboard', 'success');
+    } catch (error) {
+      addLog('Failed to copy logs to clipboard', 'error');
+      console.error('Failed to copy logs:', error);
+    }
+  }, [logs, addLog]);
+
   const stopCamera = useCallback(() => {
     if (currentStream) {
       currentStream.getTracks().forEach(track => track.stop());
@@ -42,19 +59,23 @@ export default function CameraDiagnostics() {
     video: {
       width: { ideal: 1920, min: 640 },
       height: { ideal: 1080, min: 480 },
-      frameRate: { ideal: 30 }
+      frameRate: { ideal: 30 },
+      facingMode: { ideal: "environment" }
     }
   });
 
   const getBasicConstraints = (): CameraConstraints => ({
     video: {
       width: { ideal: 1280, min: 640 },
-      height: { ideal: 720, min: 480 }
+      height: { ideal: 720, min: 480 },
+      facingMode: { ideal: "environment" }
     }
   });
 
   const getMinimalConstraints = (): CameraConstraints => ({
-    video: true
+    video: {
+      facingMode: { ideal: "environment" }
+    }
   });
 
   const testConstraints = async (constraints: CameraConstraints, name: string) => {
@@ -66,6 +87,17 @@ export default function CameraDiagnostics() {
       setCurrentStream(stream);
       
       if (videoRef.current) {
+        // Ensure mobile autoplay compatibility before attaching stream
+        try {
+          videoRef.current.autoplay = true
+          videoRef.current.muted = true
+          videoRef.current.playsInline = true
+          videoRef.current.setAttribute('playsinline', 'true')
+          videoRef.current.setAttribute('webkit-playsinline', 'true')
+          videoRef.current.controls = false
+        } catch (attrErr) {
+          console.warn('Failed to set video attributes:', attrErr)
+        }
         videoRef.current.srcObject = stream;
       }
 
@@ -238,6 +270,63 @@ export default function CameraDiagnostics() {
               playsInline
               muted
               className="w-full h-64 bg-gray-100 rounded-lg object-cover"
+              onLoadedData={async () => {
+                if (videoRef.current) {
+                  try {
+                    if (videoRef.current.paused && videoRef.current.srcObject) {
+                      const playPromise = videoRef.current.play()
+                      if (playPromise !== undefined) {
+                        await playPromise
+                        addLog('Видео запущено по событию loadeddata', 'success')
+                      }
+                    }
+                  } catch (e) {
+                    addLog(`Не удалось запустить видео по loadeddata: ${(e as Error).message}`, 'error')
+                  }
+                }
+              }}
+              onCanPlay={async () => {
+                if (videoRef.current) {
+                  try {
+                    if (videoRef.current.paused && videoRef.current.srcObject) {
+                      const playPromise = videoRef.current.play()
+                      if (playPromise !== undefined) {
+                        await playPromise
+                        addLog('Видео запущено по событию canplay', 'success')
+                      }
+                    }
+                  } catch (e) {
+                    addLog(`Не удалось запустить видео по canplay: ${(e as Error).message}`, 'error')
+                  }
+                }
+              }}
+              onClick={async () => {
+                if (videoRef.current && videoRef.current.paused && videoRef.current.srcObject) {
+                  try {
+                    const playPromise = videoRef.current.play()
+                    if (playPromise !== undefined) {
+                      await playPromise
+                      addLog('Видео активировано пользователем (click)', 'success')
+                    }
+                  } catch (e) {
+                    addLog(`Не удалось активировать видео (click): ${(e as Error).message}`, 'error')
+                  }
+                }
+              }}
+              onTouchStart={async () => {
+                if (videoRef.current && videoRef.current.paused && videoRef.current.srcObject) {
+                  try {
+                    const playPromise = videoRef.current.play()
+                    if (playPromise !== undefined) {
+                      await playPromise
+                      addLog('Видео активировано пользователем (touch)', 'success')
+                    }
+                  } catch (e) {
+                    addLog(`Не удалось активировать видео (touch): ${(e as Error).message}`, 'error')
+                  }
+                }
+              }}
+              style={{ backgroundColor: '#000', minHeight: '16rem' }}
             />
           </div>
 
@@ -245,12 +334,20 @@ export default function CameraDiagnostics() {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold text-gray-900">Diagnostic Logs</h3>
-              <button
-                onClick={clearLogs}
-                className="text-sm bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded transition-colors"
-              >
-                Clear
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={copyLogsToClipboard}
+                  className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition-colors"
+                >
+                  Copy
+                </button>
+                <button
+                  onClick={clearLogs}
+                  className="text-sm bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
             </div>
             <div className="h-64 overflow-y-auto bg-gray-50 rounded-lg p-4 font-mono text-sm">
               {logs.length === 0 ? (

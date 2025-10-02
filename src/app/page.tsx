@@ -2,18 +2,24 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Scanner from '@/components/Scanner'
-import { ScanResult } from '@/lib/scanner'
+import FullscreenScanner from '@/components/FullscreenScanner'
+import { ScanResult } from '@/services/scanner'
 import { InventoryItem } from '@/lib/sheets'
+import { useScanner } from '@/hooks/useScanner'
 
 export default function Home() {
   const { data: session, status } = useSession()
-  const [isScanning, setIsScanning] = useState(false)
+  const router = useRouter()
+  const [showScanner, setShowScanner] = useState(false)
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
   const [inventory, setInventory] = useState<InventoryItem[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  
+  // Scanner hook for image upload functionality
+  const { scanFromImage } = useScanner()
 
 
   const loadInventory = useCallback(async () => {
@@ -52,7 +58,7 @@ export default function Home() {
 
   const handleScan = async (result: ScanResult) => {
     setScanResult(result)
-    setIsScanning(false)
+    setShowScanner(false)
     
     // Try to find existing item by scanned code
     const existingItem = inventory.find(item => 
@@ -75,6 +81,31 @@ export default function Home() {
         scannedBy: session?.user?.email || 'unknown'
       })
     }
+  }
+
+  const handleScanError = (error: string) => {
+    setError(error)
+    console.error('Ошибка сканирования:', error)
+  }
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      setError('')
+      const result = await scanFromImage(file)
+      if (result) {
+        await handleScan(result)
+      } else {
+        setError('Не удалось распознать штрих-код на изображении')
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Ошибка при сканировании изображения')
+    }
+    
+    // Reset file input
+    event.target.value = ''
   }
 
   const addInventoryItem = async (item: Omit<InventoryItem, 'id'>) => {
@@ -132,20 +163,9 @@ export default function Home() {
   }
 
   if (!session) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">ExoScan</h1>
-          <p className="mb-6">Inventory Management with Google Sheets</p>
-          <button
-            onClick={() => signIn('google')}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg"
-          >
-            Sign in with Google
-          </button>
-        </div>
-      </div>
-    )
+    // Перенаправляем на страницу логина вместо показа промежуточного экрана
+    router.push('/login')
+    return null // Не рендерим ничего во время редиректа
   }
 
   return (
@@ -171,36 +191,61 @@ export default function Home() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Scanner Section */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Scanner</h2>
+        <div className="bg-white p-8 rounded-xl shadow-sm border">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Сканер штрих-кодов</h2>
           
-          <div className="mb-4">
+          {/* Large scan button */}
+          <div className="flex flex-col items-center justify-center py-12">
             <button
-              onClick={() => setIsScanning(!isScanning)}
-              className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-all ${
-                isScanning
-                  ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg'
-                  : 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg'
-              }`}
+              onClick={() => setShowScanner(true)}
+              className="group relative bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-8 rounded-2xl font-semibold text-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 active:scale-95"
             >
-              {isScanning ? 'Stop Scanning' : 'Start Scanning'}
+              <div className="flex flex-col items-center gap-4">
+                {/* Barcode icon */}
+                <div className="relative">
+                  <svg className="w-16 h-16 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M2 6h1v12H2V6zm2 0h1v12H4V6zm2 0h1v12H6V6zm3 0h1v12H9V6zm2 0h1v12h-1V6zm3 0h1v12h-1V6zm2 0h1v12h-1V6zm3 0h1v12h-1V6zm2 0h1v12h-1V6z"/>
+                  </svg>
+                  <div className="absolute inset-0 bg-white/20 rounded-lg animate-pulse"></div>
+                </div>
+                <span className="text-xl font-bold">Сканировать код</span>
+                <span className="text-sm opacity-90">Нажмите для запуска камеры</span>
+              </div>
+              
+              {/* Animated border */}
+              <div className="absolute inset-0 rounded-2xl border-2 border-white/30 group-hover:border-white/50 transition-colors duration-300"></div>
             </button>
+            
+            {/* Image upload button */}
+            <div className="mt-6">
+              <label className="group relative bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 cursor-pointer inline-flex items-center gap-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Загрузить изображение</span>
+              </label>
+              <p className="text-sm text-gray-600 mt-2 text-center">Выберите изображение со штрих-кодом</p>
+            </div>
           </div>
 
-          {isScanning && (
-            <Scanner
-              onScan={handleScan}
-              onError={(err) => setError(err.message)}
-              isActive={isScanning}
-            />
+          {error && (
+            <div className="mt-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+              <p className="text-red-800 font-medium">{error}</p>
+            </div>
           )}
 
           {scanResult && (
             <div className="mt-6 p-6 bg-green-50 border-2 border-green-200 rounded-xl">
-              <h3 className="font-bold text-green-900 mb-3">Scan Result:</h3>
-              <p className="text-green-800 font-medium">Code: {scanResult.text}</p>
-              <p className="text-green-800 font-medium">Format: {scanResult.format}</p>
-              <p className="text-green-800 font-medium">Time: {scanResult.timestamp.toLocaleString()}</p>
+              <h3 className="font-bold text-green-900 mb-3">Результат сканирования:</h3>
+              <p className="text-green-800 font-medium">Код: {scanResult.text}</p>
+              <p className="text-green-800 font-medium">Формат: {scanResult.format}</p>
+              <p className="text-green-800 font-medium">Время: {scanResult.timestamp.toLocaleString()}</p>
             </div>
           )}
         </div>
@@ -251,6 +296,15 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Fullscreen Scanner */}
+      {showScanner && (
+        <FullscreenScanner
+          onScan={handleScan}
+          onClose={() => setShowScanner(false)}
+          onError={handleScanError}
+        />
+      )}
     </div>
   )
 }

@@ -1,0 +1,908 @@
+ тЪа Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of D:\Dev\ExoScan\package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * D:\Dev\ExoScan\exoscan-web\package-lock.json
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426502622 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426502824 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426502855 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '9876543210987', format: 'CODE_128', timestamp: 1759426504003 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: 'barcode-0', format: 'EAN_13', timestamp: 1759426505027 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426505029 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.error
+    тЭМ Scanner: ╨Ю╤И╨╕╨▒╨║╨░ ╨╖╨░╨┐╤Г╤Б╨║╨░ ╤Б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╤П: Error: Camera busy
+        at Object.<anonymous> (D:\Dev\ExoScan\exoscan-web\src\components\__tests__\Scanner.integration.test.tsx:450:32)
+        at Promise.finally.completed (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+        at _callCircusTest (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+        at _runTest (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+        at D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+        at _runTestsForDescribeBlock (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+        at _runTestsForDescribeBlock (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+        at _runTestsForDescribeBlock (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+        at run (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+        at runAndTransformResultsToJestFormat (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+        at jestAdapter (D:\Dev\ExoScan\exoscan-web\node_modules\jest-circus\build\runner.js:101:19)
+        at runTestInternal (D:\Dev\ExoScan\exoscan-web\node_modules\jest-runner\build\index.js:275:16)
+        at runTest (D:\Dev\ExoScan\exoscan-web\node_modules\jest-runner\build\index.js:343:7)
+
+    [0m [90m 64 |[39m           console[33m.[39mlog([32m'тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛'[39m)[33m;[39m
+     [90m 65 |[39m         } [36mcatch[39m (err) {
+    [31m[1m>[22m[39m[90m 66 |[39m           console[33m.[39merror([32m'тЭМ Scanner: ╨Ю╤И╨╕╨▒╨║╨░ ╨╖╨░╨┐╤Г╤Б╨║╨░ ╤Б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╤П:'[39m[33m,[39m err)[33m;[39m
+     [90m    |[39m                   [31m[1m^[22m[39m
+     [90m 67 |[39m           onError(err [36minstanceof[39m [33mError[39m [33m?[39m err [33m:[39m [36mnew[39m [33mError[39m([32m'╨Ю╤И╨╕╨▒╨║╨░ ╨╖╨░╨┐╤Г╤Б╨║╨░ ╤Б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╤П'[39m))[33m;[39m
+     [90m 68 |[39m         }
+     [90m 69 |[39m       }[33m;[39m[0m
+
+      at error (src/components/Scanner.tsx:66:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: 'barcode-1', format: 'EAN_13', timestamp: 1759426506172 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426506188 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426506203 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426506218 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426506219 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426506220 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: {
+      text: 'recovery-barcode',
+      format: 'EAN_13',
+      timestamp: 1759426507424
+    }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: ╨б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╨╡ ╨╖╨░╨┐╤Г╤Й╨╡╨╜╨╛
+
+      at log (src/components/Scanner.tsx:64:19)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426507593 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426507594 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426507595 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426507609 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+  console.log
+    тЬЕ Scanner: Scan result: { text: '1234567890123', format: 'EAN_13', timestamp: 1759426507610 }
+
+      at log (src/components/Scanner.tsx:46:15)
+
+FAIL src/components/__tests__/Scanner.integration.test.tsx (5.918 s)
+  Scanner Component - Integration Tests
+    Complete Scanning Workflow
+      тИЪ should complete full camera-to-scan workflow (240 ms)
+      ├Ч should handle camera switching during scanning (22 ms)
+      ├Ч should handle multiple consecutive scans (1145 ms)
+    MediaStream Lifecycle Integration
+      ├Ч should properly manage stream lifecycle during errors (1023 ms)
+      тИЪ should handle stream interruption and recovery (9 ms)
+    Performance Integration
+      ├Ч should maintain performance during continuous scanning (1149 ms)
+      ├Ч should not cause memory leaks during extended use (51 ms)
+    Error Recovery Integration
+      ├Ч should recover from temporary camera access issues (1076 ms)
+      тИЪ should handle ZXing library errors gracefully (278 ms)
+    Real-world Scenarios
+      тИЪ should handle rapid start/stop/start cycles (31 ms)
+      тИЪ should work correctly after page visibility changes (137 ms)
+
+  тЧП Scanner Component - Integration Tests тА║ Complete Scanning Workflow тА║ should handle camera switching during scanning
+
+    TestingLibraryElementError: Unable to find an element with the text: ЁЯУ╖. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    <body>
+      <div>
+        <div
+          class="relative w-full h-full bg-black"
+        >
+          <video
+            autoplay=""
+            class="w-full h-full object-cover"
+            data-testid="scanner-video"
+            playsinline=""
+          />
+          <div
+            class="absolute top-4 right-4 flex flex-col gap-2"
+          >
+            <button
+              class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+              title="╨Я╨╡╤А╨╡╨║╨╗╤О╤З╨╕╤В╤М ╨║╨░╨╝╨╡╤А╤Г"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+            <button
+              class="p-2 rounded-full transition-colors bg-black/50 text-white hover:bg-black/70"
+              title="╨а╨╡╨╢╨╕╨╝ ╤Д╨╛╨║╤Г╤Б╨░: ╨Р╨▓╤В╨╛"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+          >
+            <div
+              class="flex items-center gap-2 bg-black/50 rounded-full px-4 py-2"
+            >
+              <button
+                class="text-white p-1 disabled:opacity-50"
+                disabled=""
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20 12H4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+              <span
+                class="text-white text-sm min-w-[3rem] text-center"
+              >
+                1.0
+                x
+              </span>
+              <button
+                class="text-white p-1 disabled:opacity-50"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 4v16m8-8H4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+
+      288 |       
+      289 |       // Switch to front camera
+    > 290 |       const switchButton = screen.getByText('ЁЯУ╖');
+          |                                   ^
+      291 |       await userEvent.click(switchButton);
+      292 |       
+      293 |       await waitFor(() => {
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.getByText (src/components/__tests__/Scanner.integration.test.tsx:290:35)
+
+  тЧП Scanner Component - Integration Tests тА║ Complete Scanning Workflow тА║ should handle multiple consecutive scans
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "9876543210987"
+    Received
+           1: "1234567890123"
+           2: "1234567890123"
+
+    Number of calls: 2
+
+    Ignored nodes: comments, script, style
+    <html>
+      <head />
+      <body>
+        <div>
+          <div
+            class="relative w-full h-full bg-black"
+          >
+            <video
+              autoplay=""
+              class="w-full h-full object-cover"
+              data-testid="scanner-video"
+              playsinline=""
+            />
+            <div
+              class="absolute top-4 right-4 flex flex-col gap-2"
+            >
+              <button
+                class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                title="╨Я╨╡╤А╨╡╨║╨╗╤О╤З╨╕╤В╤М ╨║╨░╨╝╨╡╤А╤Г"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+              <button
+                class="p-2 rounded-full transition-colors bg-black/50 text-white hover:bg-black/70"
+                title="╨а╨╡╨╢╨╕╨╝ ╤Д╨╛╨║╤Г╤Б╨░: ╨Р╨▓╤В╨╛"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              class="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="flex items-center gap-2 bg-black/50 rounded-full px-4 py-2"
+              >
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                  disabled=""
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M20 12H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+                <span
+                  class="text-white text-sm min-w-[3rem] text-center"
+                >
+                  1.0
+                  x
+                </span>
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 4v16m8-8H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+
+      321 |       // Wait for second scan
+      322 |       await waitFor(() => {
+    > 323 |         expect(mockOnScan).toHaveBeenCalledWith('9876543210987');
+          |                            ^
+      324 |       });
+      325 |       
+      326 |       expect(mockOnScan).toHaveBeenCalledTimes(2);
+
+      at toHaveBeenCalledWith (src/components/__tests__/Scanner.integration.test.tsx:323:28)
+      at runWithExpensiveErrorDiagnosticsDisabled (node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  тЧП Scanner Component - Integration Tests тА║ MediaStream Lifecycle Integration тА║ should properly manage stream lifecycle during errors
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: ObjectContaining {"message": StringContaining "╨Ю╤И╨╕╨▒╨║╨░ ╤Б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╤П"}
+
+    Number of calls: 0
+
+    Ignored nodes: comments, script, style
+    <html>
+      <head />
+      <body>
+        <div>
+          <div
+            class="relative w-full h-full bg-black"
+          >
+            <video
+              autoplay=""
+              class="w-full h-full object-cover"
+              data-testid="scanner-video"
+              playsinline=""
+            />
+            <div
+              class="absolute top-4 right-4 flex flex-col gap-2"
+            >
+              <button
+                class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                title="╨Я╨╡╤А╨╡╨║╨╗╤О╤З╨╕╤В╤М ╨║╨░╨╝╨╡╤А╤Г"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+              <button
+                class="p-2 rounded-full transition-colors bg-black/50 text-white hover:bg-black/70"
+                title="╨а╨╡╨╢╨╕╨╝ ╤Д╨╛╨║╤Г╤Б╨░: ╨Р╨▓╤В╨╛"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              class="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="flex items-center gap-2 bg-black/50 rounded-full px-4 py-2"
+              >
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                  disabled=""
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M20 12H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+                <span
+                  class="text-white text-sm min-w-[3rem] text-center"
+                >
+                  1.0
+                  x
+                </span>
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 4v16m8-8H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+
+      341 |       
+      342 |       await waitFor(() => {
+    > 343 |         expect(mockOnError).toHaveBeenCalledWith(
+          |                             ^
+      344 |           expect.objectContaining({
+      345 |             message: expect.stringContaining('╨Ю╤И╨╕╨▒╨║╨░ ╤Б╨║╨░╨╜╨╕╤А╨╛╨▓╨░╨╜╨╕╤П')
+      346 |           })
+
+      at toHaveBeenCalledWith (src/components/__tests__/Scanner.integration.test.tsx:343:29)
+      at runWithExpensiveErrorDiagnosticsDisabled (node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  тЧП Scanner Component - Integration Tests тА║ Performance Integration тА║ should maintain performance during continuous scanning
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "barcode-1"
+    Received
+           1: "barcode-0"
+           2: "1234567890123"
+
+    Number of calls: 2
+
+    Ignored nodes: comments, script, style
+    <html>
+      <head />
+      <body>
+        <div>
+          <div
+            class="relative w-full h-full bg-black"
+          >
+            <video
+              autoplay=""
+              class="w-full h-full object-cover"
+              data-testid="scanner-video"
+              playsinline=""
+            />
+            <div
+              class="absolute top-4 right-4 flex flex-col gap-2"
+            >
+              <button
+                class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                title="╨Я╨╡╤А╨╡╨║╨╗╤О╤З╨╕╤В╤М ╨║╨░╨╝╨╡╤А╤Г"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+              <button
+                class="p-2 rounded-full transition-colors bg-black/50 text-white hover:bg-black/70"
+                title="╨а╨╡╨╢╨╕╨╝ ╤Д╨╛╨║╤Г╤Б╨░: ╨Р╨▓╤В╨╛"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              class="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="flex items-center gap-2 bg-black/50 rounded-full px-4 py-2"
+              >
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                  disabled=""
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M20 12H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+                <span
+                  class="text-white text-sm min-w-[3rem] text-center"
+                >
+                  1.0
+                  x
+                </span>
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 4v16m8-8H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+
+      405 |         
+      406 |         await waitFor(() => {
+    > 407 |           expect(mockOnScan).toHaveBeenCalledWith(`barcode-${i}`);
+          |                              ^
+      408 |         });
+      409 |       }
+      410 |       
+
+      at toHaveBeenCalledWith (src/components/__tests__/Scanner.integration.test.tsx:407:30)
+      at runWithExpensiveErrorDiagnosticsDisabled (node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  тЧП Scanner Component - Integration Tests тА║ Performance Integration тА║ should not cause memory leaks during extended use
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 5
+    Received number of calls: 6
+
+      440 |       
+      441 |       // All streams should be properly cleaned up
+    > 442 |       expect(mockStartScanning).toHaveBeenCalledTimes(5);
+          |                                 ^
+      443 |     });
+      444 |   });
+      445 |
+
+      at Object.toHaveBeenCalledTimes (src/components/__tests__/Scanner.integration.test.tsx:442:33)
+
+  тЧП Scanner Component - Integration Tests тА║ Error Recovery Integration тА║ should recover from temporary camera access issues
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 2
+    Received number of calls: 1
+
+    Ignored nodes: comments, script, style
+    <html>
+      <head />
+      <body>
+        <div>
+          <div
+            class="relative w-full h-full bg-black"
+          >
+            <video
+              autoplay=""
+              class="w-full h-full object-cover"
+              data-testid="scanner-video"
+              playsinline=""
+            />
+            <div
+              class="absolute top-4 right-4 flex flex-col gap-2"
+            >
+              <button
+                class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                title="╨Я╨╡╤А╨╡╨║╨╗╤О╤З╨╕╤В╤М ╨║╨░╨╝╨╡╤А╤Г"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+              <button
+                class="p-2 rounded-full transition-colors bg-black/50 text-white hover:bg-black/70"
+                title="╨а╨╡╨╢╨╕╨╝ ╤Д╨╛╨║╤Г╤Б╨░: ╨Р╨▓╤В╨╛"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              class="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="flex items-center gap-2 bg-black/50 rounded-full px-4 py-2"
+              >
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                  disabled=""
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M20 12H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+                <span
+                  class="text-white text-sm min-w-[3rem] text-center"
+                >
+                  1.0
+                  x
+                </span>
+                <button
+                  class="text-white p-1 disabled:opacity-50"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 4v16m8-8H4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+
+      466 |       
+      467 |       await waitFor(() => {
+    > 468 |         expect(mockStartScanning).toHaveBeenCalledTimes(2);
+          |                                   ^
+      469 |         expect(screen.getByTestId('scanner-video')).toBeInTheDocument();
+      470 |       });
+      471 |     });
+
+      at toHaveBeenCalledTimes (src/components/__tests__/Scanner.integration.test.tsx:468:35)
+      at runWithExpensiveErrorDiagnosticsDisabled (node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 5 passed, 11 total
+Snapshots:   0 total
+Time:        6.653 s
+Ran all test suites matching src/components/__tests__/Scanner.integration.test.tsx.

@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-09-30T20:23:27.086Z",
+  "testType": "Browser Camera Automation",
+  "logs": [
+    {
+      "timestamp": "2025-09-30T20:23:26.912Z",
+      "type": "INFO",
+      "message": "Запуск автоматизации тестирования камеры в браузере..."
+    },
+    {
+      "timestamp": "2025-09-30T20:23:26.918Z",
+      "type": "INFO",
+      "message": "Открытие браузера для тестирования камеры..."
+    },
+    {
+      "timestamp": "2025-09-30T20:23:27.083Z",
+      "type": "SUCCESS",
+      "message": "✅ Браузер открыт для тестирования"
+    },
+    {
+      "timestamp": "2025-09-30T20:23:27.084Z",
+      "type": "INFO",
+      "message": "Инструкции для тестирования сгенерированы"
+    },
+    {
+      "timestamp": "2025-09-30T20:23:27.085Z",
+      "type": "INFO",
+      "message": "Скрипт автоматизации сохранен: D:\\Dev\\ExoScan\\exoscan-web\\scripts\\browser-automation-script.js"
+    },
+    {
+      "timestamp": "2025-09-30T20:23:27.086Z",
+      "type": "INFO",
+      "message": "Инструкции для тестирования сгенерированы"
+    },
+    {
+      "timestamp": "2025-09-30T20:23:27.101Z",
+      "type": "INFO",
+      "message": "Скрипт автоматизации сохранен: D:\\Dev\\ExoScan\\exoscan-web\\scripts\\browser-automation-script.js"
+    }
+  ],
+  "instructions": "\n=== ИНСТРУКЦИИ ДЛЯ РУЧНОГО ТЕСТИРОВАНИЯ КАМЕРЫ ===\n\n1. ПРОВЕРКА ИНИЦИАЛИЗАЦИИ КАМЕРЫ:\n   - Нажмите кнопку \"Запустить камеру\"\n   - Проверьте, появляется ли видео поток\n   - Убедитесь, что нет ошибок в логе\n\n2. ТЕСТИРОВАНИЕ ОГРАНИЧЕНИЙ:\n   - Нажмите кнопку \"Тест ограничений\"\n   - Проверьте результаты для всех трех уровней:\n     * Оптимальные (1920x1080, 30fps)\n     * Базовые (1280x720)\n     * Минимальные (только facingMode)\n\n3. ПРОВЕРКА УСТРОЙСТВ:\n   - Нажмите кнопку \"Список камер\"\n   - Убедитесь, что отображаются доступные камеры\n\n4. ТЕСТИРОВАНИЕ СКАНИРОВАНИЯ:\n   - При активной камере поднесите QR-код или штрих-код\n   - Проверьте, работает ли автофокус\n   - Убедитесь в качестве изображения\n\n5. ПРОВЕРКА СТАБИЛЬНОСТИ:\n   - Оставьте камеру работать на 30 секунд\n   - Проверьте отсутствие зависаний\n   - Нажмите \"Остановить камеру\"\n\nОЖИДАЕМЫЕ РЕЗУЛЬТАТЫ:\n✅ Камера запускается без ошибок\n✅ Видео поток отображается корректно\n✅ Все уровни ограничений работают\n✅ Список устройств не пустой\n✅ Нет ошибок в консоли браузера\n✅ Камера стабильно работает\n\nВОЗМОЖНЫЕ ПРОБЛЕМЫ:\n❌ Ошибка доступа к камере (разрешения)\n❌ Неподдерживаемые ограничения\n❌ Проблемы с HTTPS/безопасным контекстом\n❌ Конфликты с другими приложениями\n",
+  "automationScript": "\n// Скрипт для автоматизации тестирования в консоли браузера\n// Вставьте этот код в консоль разработчика (F12)\n\n(async function automateCameraTest() {\n    console.log('🚀 Запуск автоматизированного тестирования камеры...');\n    \n    const results = {\n        timestamp: new Date().toISOString(),\n        tests: []\n    };\n    \n    function addResult(test, status, message, data = null) {\n        const result = { test, status, message, data, timestamp: new Date().toISOString() };\n        results.tests.push(result);\n        console.log(`[${status}] ${test}: ${message}`);\n        return result;\n    }\n    \n    // Тест 1: Проверка поддержки MediaDevices\n    try {\n        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {\n            addResult('MediaDevices Support', '✅', 'getUserMedia поддерживается');\n        } else {\n            addResult('MediaDevices Support', '❌', 'getUserMedia не поддерживается');\n            return results;\n        }\n    } catch (error) {\n        addResult('MediaDevices Support', '❌', `Ошибка: ${error.message}`);\n        return results;\n    }\n    \n    // Тест 2: Перечисление устройств\n    try {\n        const devices = await navigator.mediaDevices.enumerateDevices();\n        const videoDevices = devices.filter(d => d.kind === 'videoinput');\n        addResult('Device Enumeration', '✅', `Найдено ${videoDevices.length} видео устройств`, videoDevices);\n    } catch (error) {\n        addResult('Device Enumeration', '❌', `Ошибка: ${error.message}`);\n    }\n    \n    // Тест 3: Проверка разрешений\n    try {\n        const permissionStatus = await navigator.permissions.query({name: 'camera'});\n        addResult('Camera Permissions', '✅', `Статус разрешений: ${permissionStatus.state}`, {state: permissionStatus.state});\n    } catch (error) {\n        addResult('Camera Permissions', '⚠️', `Не удалось проверить разрешения: ${error.message}`);\n    }\n    \n    // Тест 4: Тестирование ограничений\n    const constraintTests = [\n        {\n            name: 'Минимальные',\n            constraints: { video: { facingMode: { ideal: \"environment\" } } }\n        },\n        {\n            name: 'Базовые',\n            constraints: { video: { facingMode: { ideal: \"environment\" }, width: { ideal: 1280 }, height: { ideal: 720 } } }\n        },\n        {\n            name: 'Оптимальные',\n            constraints: { video: { facingMode: { ideal: \"environment\" }, width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } } }\n        }\n    ];\n    \n    for (const test of constraintTests) {\n        try {\n            const stream = await navigator.mediaDevices.getUserMedia(test.constraints);\n            const track = stream.getVideoTracks()[0];\n            const settings = track.getSettings();\n            \n            addResult(`Constraints: ${test.name}`, '✅', `Успешно: ${settings.width}x${settings.height}`, settings);\n            \n            // Остановка тестового потока\n            stream.getTracks().forEach(track => track.stop());\n        } catch (error) {\n            addResult(`Constraints: ${test.name}`, '❌', `Ошибка: ${error.message}`);\n        }\n    }\n    \n    // Тест 5: Проверка безопасного контекста\n    addResult('Secure Context', window.isSecureContext ? '✅' : '❌', `Безопасный контекст: ${window.isSecureContext}`);\n    \n    // Тест 6: Проверка HTTPS\n    addResult('HTTPS', location.protocol === 'https:' ? '✅' : '⚠️', `Протокол: ${location.protocol}`);\n    \n    console.log('📊 Результаты тестирования:', results);\n    \n    // Сохранение результатов в localStorage\n    localStorage.setItem('cameraTestResults', JSON.stringify(results));\n    console.log('💾 Результаты сохранены в localStorage');\n    \n    return results;\n})();\n"
+}

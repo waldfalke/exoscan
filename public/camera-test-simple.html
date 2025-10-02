@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Простой тест камеры</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+            height: 480px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error { color: #dc3545; }
+        .success { color: #28a745; }
+        .info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>Тест видео режима сканирования</h1>
+    
+    <video id="video" autoplay playsinline muted></video>
+    
+    <div class="controls">
+        <button id="startBtn" onclick="startCamera()">Запустить камеру</button>
+        <button id="stopBtn" onclick="stopCamera()" disabled>Остановить камеру</button>
+        <button id="listBtn" onclick="listCameras()">Список камер</button>
+        <button id="testBtn" onclick="testConstraints()">Тест ограничений</button>
+        <button id="clearBtn" onclick="clearLog()">Очистить лог</button>
+    </div>
+    
+    <div id="log" class="log"></div>
+
+    <script>
+        let currentStream = null;
+        const video = document.getElementById('video');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const logDiv = document.getElementById('log');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.textContent = `${timestamp}: ${message}`;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function clearLog() {
+            logDiv.innerHTML = '';
+        }
+
+        async function startCamera() {
+            try {
+                log('Запуск камеры...', 'info');
+                
+                // Проверка поддержки
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('getUserMedia не поддерживается');
+                }
+
+                // Запрос доступа к камере
+                const constraints = {
+                    video: {
+                        facingMode: { ideal: "environment" },
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                };
+
+                log(`Ограничения: ${JSON.stringify(constraints)}`, 'info');
+                
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = currentStream;
+                
+                // Получение информации о потоке
+                const videoTrack = currentStream.getVideoTracks()[0];
+                const settings = videoTrack.getSettings();
+                
+                log(`✅ Камера запущена успешно!`, 'success');
+                log(`Устройство: ${videoTrack.label}`, 'info');
+                log(`Разрешение: ${settings.width}x${settings.height}`, 'info');
+                log(`Настройки: ${JSON.stringify(settings)}`, 'info');
+                
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                
+            } catch (error) {
+                log(`❌ Ошибка запуска камеры: ${error.message}`, 'error');
+                console.error('Camera error:', error);
+            }
+        }
+
+        async function stopCamera() {
+            try {
+                if (currentStream) {
+                    currentStream.getTracks().forEach(track => track.stop());
+                    currentStream = null;
+                    video.srcObject = null;
+                    log('Камера остановлена', 'info');
+                }
+                
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                
+            } catch (error) {
+                log(`❌ Ошибка остановки камеры: ${error.message}`, 'error');
+            }
+        }
+
+        async function listCameras() {
+            try {
+                log('Получение списка камер...', 'info');
+                
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                if (videoDevices.length === 0) {
+                    log('❌ Видео устройства не найдены', 'error');
+                    return;
+                }
+                
+                log(`Найдено ${videoDevices.length} видео устройств:`, 'success');
+                videoDevices.forEach((device, index) => {
+                    log(`${index + 1}. ${device.label || `Камера ${index + 1}`} (${device.deviceId})`, 'info');
+                });
+                
+            } catch (error) {
+                log(`❌ Ошибка получения списка камер: ${error.message}`, 'error');
+            }
+        }
+
+        async function testConstraints() {
+            log('Тестирование различных ограничений...', 'info');
+            
+            const constraints = [
+                {
+                    name: 'Оптимальные',
+                    constraints: {
+                        video: {
+                            facingMode: { ideal: "environment" },
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 },
+                            frameRate: { ideal: 30 }
+                        }
+                    }
+                },
+                {
+                    name: 'Базовые',
+                    constraints: {
+                        video: {
+                            facingMode: { ideal: "environment" },
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 }
+                        }
+                    }
+                },
+                {
+                    name: 'Минимальные',
+                    constraints: {
+                        video: {
+                            facingMode: { ideal: "environment" }
+                        }
+                    }
+                }
+            ];
+
+            for (const test of constraints) {
+                try {
+                    log(`Тест ${test.name} ограничений...`, 'info');
+                    const stream = await navigator.mediaDevices.getUserMedia(test.constraints);
+                    
+                    const videoTrack = stream.getVideoTracks()[0];
+                    const settings = videoTrack.getSettings();
+                    
+                    log(`✅ ${test.name}: ${settings.width}x${settings.height}`, 'success');
+                    
+                    // Остановка тестового потока
+                    stream.getTracks().forEach(track => track.stop());
+                    
+                } catch (error) {
+                    log(`❌ ${test.name}: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        // Обработка ошибок
+        window.addEventListener('error', (event) => {
+            log(`Глобальная ошибка: ${event.error.message}`, 'error');
+        });
+
+        // Информация о браузере
+        log(`Браузер: ${navigator.userAgent}`, 'info');
+        log(`HTTPS: ${location.protocol === 'https:'}`, 'info');
+        log(`Localhost: ${location.hostname === 'localhost'}`, 'info');
+        log(`Secure Context: ${window.isSecureContext}`, 'info');
+    </script>
+</body>
+</html>
